@@ -5,20 +5,21 @@ import { UserModule } from "./users/users.module";
 import { MongooseModule } from "@nestjs/mongoose";
 import { AuthModule } from "./auth/auth.module";
 import { RegistrationModule } from './enrollment/Registration.module';
-import { FrontendModule } from './frontend/frontend.module';
+import { ServeStaticModule } from "@nestjs/serve-static/dist";
+import { resolve } from "path";
 
-console.log(UserModule);
-console.log(AuthModule);
-console.log(MongooseModule);
-console.log(MongooseModule.forRoot("mongodb://localhost:27017"));
+
+const frontendPath = resolve(__dirname+"/../"+"/../"+ "/frontend/"+"/dist");
+
+console.log(frontendPath);
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({rootPath:frontendPath, exclude:["api/*"]}),
     UserModule,
     MongooseModule.forRoot("mongodb://localhost:27017"),
     AuthModule,
     RegistrationModule,
-    FrontendModule,
   ],
   controllers: [AppController],
   providers: [AppService],

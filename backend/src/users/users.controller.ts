@@ -12,13 +12,11 @@ import {
 import { UserService } from "./users.service";
 import { CreateUserDto } from "./dto/createUser.dto";
 import { UpdateUserDto } from "./dto/updateUser.dto";
-import { ConfigService } from "src/config/config.service";
 
 @Controller("users")
 export class UsersController {
   constructor(
     private userServices: UserService,
-    private configService: ConfigService,
   ) {}
 
   @Get()
@@ -26,10 +24,6 @@ export class UsersController {
     return this.userServices.getAllUsers();
   }
 
-  @Get("config")
-  getConfig() {
-    return this.configService.get("DATA");
-  }
 
   @Get(":id")
   @UsePipes(new ValidationPipe())
