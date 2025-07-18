@@ -177,7 +177,7 @@ export default function MultiStepForm() {
       console.log("Form Data:", formData);
       try {
         
-        const response = await fetch(`/api/registration`, {
+        const response = await fetch(`/api/Registration`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -193,8 +193,8 @@ export default function MultiStepForm() {
       alert("Registration submitted successfully! Welcome to Easy Fights! 🥊");
 
       } catch (error) {
-        console.error("Error submitting registration:", error);
-        alert("There was an error submitting your registration. Please try again later.")
+        console.error("Error submitting Registration:", error);
+        alert("There was an error submitting your Registration. Please try again later.")
         return;
       }
       

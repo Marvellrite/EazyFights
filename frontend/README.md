@@ -1,6 +1,6 @@
 # Easy Fights - Registration Form
 
-A modern, multi-step registration form for Easy Fights Martial Arts Academy built with Vite, React, and Tailwind CSS v4.
+A modern, multi-step Registration form for Easy Fights Martial Arts Academy built with Vite, React, and Tailwind CSS v4.
 
 ## Features
 

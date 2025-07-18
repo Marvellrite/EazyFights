@@ -5,11 +5,6 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { User, userSchema } from "./user.schema";
 import { ConfigModule } from "src/config/config.module";
 
-// console.log(ConfigModule.register({ filename: "development" }));
-console.log(ConfigModule);
-// console.log(MongooseModule.forFeature([{ name: "FOOD", schema: userSchema }]));
-// console.log(User.name);
-// console.log(User);
 
 @Module({
   imports: [
