@@ -175,14 +175,15 @@ export default function MultiStepForm() {
   const handleSubmit = async() => {
     if (validateStep(currentStep)) {
       console.log("Form Data:", formData);
+      const mFormData = new FormData();
+      (Object.keys(formData)as (keyof FormData)[]).forEach((key)=>{
+        mFormData.append(key, formData[key].toString())
+      })
       try {
         
         const response = await fetch(`/api/Registration`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
+          body: mFormData,
         }
       );
       if (!response.ok) {

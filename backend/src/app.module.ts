@@ -17,7 +17,7 @@ console.log(frontendPath);
   imports: [
     ServeStaticModule.forRoot({rootPath:frontendPath, exclude:["api/*"]}),
     UserModule,
-    MongooseModule.forRoot("mongodb://localhost:27017"),
+    MongooseModule.forRoot("mongodb+srv://marvel_cadet:marvelsix@cluster0.yoory8s.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"),
     AuthModule,
     RegistrationModule,
   ],
