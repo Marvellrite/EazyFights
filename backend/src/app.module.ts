@@ -4,7 +4,7 @@ import { AppService } from "./app.service";
 import { UserModule } from "./users/users.module";
 import { MongooseModule } from "@nestjs/mongoose";
 import { AuthModule } from "./auth/auth.module";
-import { RegistrationModule } from './enrollment/Registration.module';
+import { RegistrationModule } from './registration/Registration.module';
 import { ServeStaticModule } from "@nestjs/serve-static/dist";
 import { resolve } from "path";
 
