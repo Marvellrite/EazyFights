@@ -234,7 +234,7 @@ export default function MultiStepForm() {
 
           {/* Step Indicators */}
           <div className="flex items-center justify-between">
-            {steps.map((step, index) => {
+            {steps.map((step) => {
               const Icon = step.icon
               const isCompleted = currentStep > step.id
               const isCurrent = currentStep === step.id
