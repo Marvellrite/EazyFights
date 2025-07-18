@@ -1,0 +1,26 @@
+import { Module } from "@nestjs/common";
+import { UsersController } from "./users.controller";
+import { UserService } from "./users.service";
+import { MongooseModule } from "@nestjs/mongoose";
+import { User, userSchema } from "./user.schema";
+import { ConfigModule } from "src/config/config.module";
+
+// console.log(ConfigModule.register({ filename: "development" }));
+console.log(ConfigModule);
+// console.log(MongooseModule.forFeature([{ name: "FOOD", schema: userSchema }]));
+// console.log(User.name);
+// console.log(User);
+
+@Module({
+  imports: [
+    MongooseModule.forFeature([{ name: User.name, schema: userSchema }]),
+    ConfigModule.register({ filename: "production" }),
+    // ConfigModule.register("production"),
+  ],
+  controllers: [UsersController],
+  providers: [UserService],
+  exports: [UserService],
+})
+export class UserModule {}
+
+console.log(UserModule);

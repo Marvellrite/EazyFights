@@ -172,10 +172,33 @@ export default function MultiStepForm() {
     setCurrentStep((prev) => Math.max(prev - 1, 1))
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     if (validateStep(currentStep)) {
-      alert("Registration submitted successfully! Welcome to Easy Fights! 🥊")
-      console.log("Form Data:", formData)
+      console.log("Form Data:", formData);
+      try {
+        
+        const response = await fetch(`/api/registration`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      if (!response.ok) {
+          throw new Error("Form Not Submitted Successfully");
+      };
+      const data = await response.json();
+      console.log("Registration successful:", data);
+      alert("Registration submitted successfully! Welcome to Easy Fights! 🥊");
+
+      } catch (error) {
+        console.error("Error submitting registration:", error);
+        alert("There was an error submitting your registration. Please try again later.")
+        return;
+      }
+      
+      
     }
   }
 
