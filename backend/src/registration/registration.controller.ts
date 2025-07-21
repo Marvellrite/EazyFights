@@ -17,7 +17,7 @@ export class RegistrationController {
 
   @Get()
   findAll() {
-   this.RegistrationService.findAll();
+   return this.RegistrationService.findAll();
 
   }
 
