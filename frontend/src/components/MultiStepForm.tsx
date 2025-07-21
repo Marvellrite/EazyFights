@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Progress } from "@/components/ui/progress"
 import { CheckCircle, User, MapPin, Phone, Heart, Target, FileText } from "lucide-react"
+import { formatToInternational } from "../lib/utils";
 
 interface FormData {
   // Personal Information
@@ -31,7 +32,7 @@ interface FormData {
   emergencyPhoneNumber: string
 
   // Health Information
-  hasPreExistingConditions: string
+  hasPreExistingConditions: string,
   medicalConditionsDetails: string
   takingMedications: string
   medicationsDetails: string
@@ -46,6 +47,8 @@ interface FormData {
   // Liability Waiver
   agreeToWaiver: boolean
 }
+
+const server_url='http://localhost:3000/api/Registration'
 
 const steps = [
   {
@@ -175,13 +178,15 @@ export default function MultiStepForm() {
   const handleSubmit = async() => {
     if (validateStep(currentStep)) {
       console.log("Form Data:", formData);
+      let tempFormData = { ...formData, contactNumber: formatToInternational(formData.contactNumber), emergencyPhoneNumber: formatToInternational(formData.emergencyPhoneNumber) }
       const mFormData = new FormData();
-      (Object.keys(formData)as (keyof FormData)[]).forEach((key)=>{
-        mFormData.append(key, formData[key].toString())
+      (Object.keys(tempFormData)as (keyof FormData)[]).forEach((key)=>{
+        mFormData.append(key, tempFormData[key].toString())
       })
       try {
+        console.log(server_url)
         
-        const response = await fetch(`/api/Registration`, {
+        const response = await fetch(server_url, {
           method: "POST",
           body: mFormData,
         }
@@ -191,7 +196,7 @@ export default function MultiStepForm() {
       };
       const data = await response.json();
       console.log("Registration successful:", data);
-      alert("Registration submitted successfully! Welcome to Easy Fights! 🥊");
+      alert("Registration submitted successfully! Welcome to EazyFights! 🥊");
 
       } catch (error) {
         console.error("Error submitting Registration:", error);
@@ -215,8 +220,8 @@ export default function MultiStepForm() {
               <span className="text-2xl">🥊</span>
             </div>
             <div>
-              <h1 className="text-4xl font-bold text-red-800">Easy Fights</h1>
-              <p className="text-lg text-red-600 font-medium">Martial Arts Academy</p>
+              <h1 className="text-4xl font-bold text-red-800">EazyFights</h1>
+              <p className="text-lg text-red-600 font-medium">The Self Defense Academy</p>
               <p className="text-sm text-gray-600">Student Registration Form</p>
             </div>
           </div>
@@ -663,7 +668,7 @@ export default function MultiStepForm() {
                       />
                       <Label htmlFor="agreeToWaiver" className="text-sm leading-5">
                         I agree to the <span className="text-red-600 font-medium">Liability Waiver and Agreement</span>{" "}
-                        and confirm that all information provided is accurate. I agree to abide by Easy Fights Academy's
+                        and confirm that all information provided is accurate. I agree to abide by EazyFights Academy's
                         rules and regulations. *
                       </Label>
                     </div>

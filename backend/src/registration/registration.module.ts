@@ -7,9 +7,8 @@ import { MulterModule } from '../multer/multer.module';
 
 // 'CONFIGURABLE_MODULE_OPTIONS[1cf35d9635ec6d4672429]'  CONFIGURABLE_MODULE_OPTIONS[1cf35d9635ec6d4672429]
 
-console.log(MulterModule.register({filename:'test_filed'}))
 @Module({
-  imports:[MongooseModule.forFeature([{ name: Registration.name, schema: RegistrationSchema }]), MulterModule.register({filename:'test_filed'})],
+  imports:[MongooseModule.forFeature([{ name: Registration.name, schema: RegistrationSchema }])],
   controllers: [RegistrationController],
   providers: [RegistrationService],
 })

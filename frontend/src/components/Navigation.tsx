@@ -14,12 +14,12 @@ export default function Navigation() {
               <span className="text-lg">🥊</span>
             </div>
             <div>
-              <h1 className="text-xl font-bold text-red-800">Easy Fights</h1>
-              <p className="text-sm text-red-600">Martial Arts Academy</p>
+              <h1 className="text-xl font-bold text-red-800">EazyFights</h1>
+              <p className="text-sm text-red-600">The Self Defense Academy</p>
             </div>
           </div>
 
-          <div className="flex space-x-4">
+          {/* <div className="flex space-x-4">
             <Link to="/">
               <Button
                 variant={location.pathname === "/" ? "default" : "outline"}
@@ -38,7 +38,7 @@ export default function Navigation() {
                 Admin Dashboard
               </Button>
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </nav>

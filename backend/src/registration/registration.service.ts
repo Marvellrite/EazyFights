@@ -1,16 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { RegistrationDto } from './dto/registration.dto';
 import { UpdateRegistrationDto } from './dto/update-registration.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import {  Registration as registration } from './schemas/registration.schema';
+import { HydratedDocument, Model } from 'mongoose';
 
 
 @Injectable()
 export class RegistrationService {
-  create(registrationDto: RegistrationDto) {
-    return 'This action adds a new Registration';
+
+  constructor(@InjectModel(registration.name) private Registration: Model<registration> ){
+
   }
 
+
+  create(registrationDto: RegistrationDto) {
+    return this.Registration.create(registrationDto);
+  }
+  
   findAll() {
-    return `This action returns all Registration`;
+    return this.Registration.find({});
   }
 
   findOne(id: number) {

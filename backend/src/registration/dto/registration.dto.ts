@@ -1,6 +1,12 @@
-import { IsNotEmpty, IsString, IsDate, IsEmail, IsPhoneNumber, IsEnum } from "class-validator";
+import { IsNotEmpty, IsString, IsDate, IsEmail, IsPhoneNumber, IsEnum, IsBoolean } from "class-validator";
+import { Type } from "class-transformer";
 
 
+enum MartialArtsExperience {
+  None = 'none',
+  Beginner = 'beginner',
+  Intermediate = 'intermediate',
+}
 export class RegistrationDto {
    // Personal Information
     @IsNotEmpty()
@@ -8,6 +14,7 @@ export class RegistrationDto {
    fullName: string;
 
     @IsNotEmpty()
+    @Type(() => Date)
     @IsDate()
    dateOfBirth: string;
 
@@ -56,7 +63,7 @@ export class RegistrationDto {
  
    // Health Information
 
-    @IsEnum(['Yes', 'No'])
+    @IsEnum(['yes', 'no'])
     @IsNotEmpty()
    hasPreExistingConditions: string
 
@@ -64,14 +71,14 @@ export class RegistrationDto {
    medicalConditionsDetails: string
 
     @IsNotEmpty()
-    @IsEnum(['Yes', 'No'])
+    @IsEnum(['yes', 'no'])
    takingMedications: string
 
     @IsString()
    medicationsDetails: string
 
     @IsNotEmpty()
-    @IsEnum(['Yes', 'No'])
+    @IsEnum(['yes', 'no'])
    hadSurgeries: string
 
     @IsString()
@@ -85,11 +92,15 @@ export class RegistrationDto {
     @IsString()
    otherGoalDetails: string
 
-   @IsEnum(['None', 'Beginner', 'Intermediate'])
-   martialArtsExperience: string
+   @IsEnum(MartialArtsExperience)
+   martialArtsExperience: MartialArtsExperience;
+
+
+
  
    // Liability Waiver
    @IsNotEmpty()
-   @IsEnum([true, false])
+   @Type(() => Boolean)
+   @IsBoolean()
    agreeToWaiver: boolean
 }

@@ -10,13 +10,15 @@ export class RegistrationController {
 
   @Post()
   @UseInterceptors(NoFilesInterceptor())
-  create(@Body(ValidationPipe) registrationDto: RegistrationDto) {
-    return this.RegistrationService.create(registrationDto);
+  async create(@Body(new ValidationPipe({transform:true})) registrationDto: RegistrationDto) {
+    await this.RegistrationService.create(registrationDto);
+    return { msg: "Form Submitted Successfully" }
   }
 
   @Get()
   findAll() {
-    return this.RegistrationService.findAll();
+   this.RegistrationService.findAll();
+
   }
 
   @Get(':id')

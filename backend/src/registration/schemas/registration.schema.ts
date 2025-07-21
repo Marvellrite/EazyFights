@@ -45,19 +45,19 @@ export class Registration {
   emergencyPhoneNumber: string;
 
   // Health Information
-  @Prop({ required: true, enum: ['Yes', 'No'] })
+  @Prop({ required: true, enum: ['yes', 'no'] })
   hasPreExistingConditions: string;
 
   @Prop()
   medicalConditionsDetails: string;
 
-  @Prop({ required: true, enum: ['Yes', 'No'] })
+  @Prop({ required: true, enum: ['yes', 'no'] })
   takingMedications: string;
 
   @Prop()
   medicationsDetails: string;
 
-  @Prop({ required: true, enum: ['Yes', 'No'] })
+  @Prop({ required: true, enum: ['yes', 'no'] })
   hadSurgeries: string;
 
   @Prop()
@@ -70,7 +70,7 @@ export class Registration {
   @Prop()
   otherGoalDetails: string;
 
-  @Prop({ enum: ['None', 'Beginner', 'Intermediate'], default: 'None' })
+  @Prop({ enum: ['none', 'beginner', 'intermediate'], default: 'none' })
   martialArtsExperience: string;
 
   // Liability Waiver
