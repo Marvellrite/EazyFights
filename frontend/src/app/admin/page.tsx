@@ -1,11 +1,12 @@
+"use client"
 import { useState } from "react"
-import Navigation from "../components/Navigation";
-import { useStudents } from "../contexts/StudentContext"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import Navigation from "@/components/Navigation";
+import { StudentProvider, useStudents } from "@/lib/contexts/StudentContext"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/shadcn/card"
+import { Input } from "@/components/shadcn/input"
+import { Button } from "@/components/shadcn/button"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/shadcn/table"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/shadcn/dialog"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,12 +17,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Badge } from "@/components/ui/badge"
+} from "@/components/shadcn/alert-dialog"
+import { Badge } from "@/components/shadcn/badge"
 import { Search, Eye, Trash2, Users, Calendar, Phone, Mail } from "lucide-react"
-import type { Student } from "../types/student"
+import type { Student } from "@/lib/types/student"
 
-export default function AdminDashboard() {
+function AdminDashboard1(){
   const { students, deleteStudent } = useStudents()
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null)
@@ -195,7 +196,7 @@ export default function AdminDashboard() {
                     </TableRow>
                   ) : (
                     filteredStudents.map((student) => (
-                      <TableRow key={student.id}>
+                      <TableRow key={student._id}>
                         <TableCell>
                           <div>
                             <div className="font-medium">{student.fullName}</div>
@@ -256,7 +257,7 @@ export default function AdminDashboard() {
                                 <AlertDialogFooter>
                                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                                   <AlertDialogAction
-                                    onClick={() => handleDeleteStudent(student.id)}
+                                    onClick={() => handleDeleteStudent(student._id)}
                                     className="bg-red-600 hover:bg-red-700"
                                   >
                                     Delete
@@ -422,4 +423,12 @@ export default function AdminDashboard() {
     </>
 
   )
+}
+
+export default function AdminDashboard2 (){
+return(
+<StudentProvider>
+  <AdminDashboard1/>
+</StudentProvider>
+)
 }

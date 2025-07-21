@@ -12,10 +12,10 @@ import { join, resolve } from "path";
 const frontendPath = resolve( "frontend" );
 
 console.log(frontendPath);
-console.log(__dirname);
+console.log(process.env.MONGO_URI);
 @Module({
   imports: [
-    ServeStaticModule.forRoot({rootPath:frontendPath, exclude:["api/*"]}),
+    ServeStaticModule.forRoot({rootPath:frontendPath, exclude:["api/*"],}),
     UserModule,
     MongooseModule.forRoot(process.env.MONGO_URI),
     AuthModule,

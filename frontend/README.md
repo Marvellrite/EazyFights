@@ -1,62 +1,36 @@
-# Easy Fights - Registration Form
-
-A modern, multi-step Registration form for Easy Fights Martial Arts Academy built with Vite, React, and Tailwind CSS v4.
-
-## Features
-
-- 🥊 Multi-step form with 6 sections
-- 📱 Fully responsive design
-- ✅ Form validation with error handling
-- 🎨 Modern UI with Tailwind CSS v4
-- ⚡ Fast development with Vite
-- 🔧 TypeScript support
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
-### Prerequisites
+First, run the development server:
 
-- Node.js 18+ 
-- npm or yarn
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-### Installation
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-1. Clone the repository
-2. Install dependencies:
-   \`\`\`bash
-   npm install
-   \`\`\`
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-3. Start the development server:
-   \`\`\`bash
-   npm run dev
-   \`\`\`
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-4. Open [http://localhost:5173](http://localhost:5173) in your browser
+## Learn More
 
-## Form Sections
+To learn more about Next.js, take a look at the following resources:
 
-1. **Personal Information** - Basic details like name, DOB, gender
-2. **Address Information** - Location details
-3. **Emergency Contact** - Emergency contact person
-4. **Health Information** - Medical history and conditions
-5. **Training Goals** - Martial arts objectives and experience
-6. **Liability Waiver** - Agreement and final submission
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## Tech Stack
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-- **Frontend**: React 18, TypeScript
-- **Styling**: Tailwind CSS v4
-- **Build Tool**: Vite
-- **UI Components**: Radix UI primitives
-- **Icons**: Lucide React
+## Deploy on Vercel
 
-## Scripts
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-
-## License
-
-MIT License
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { Student } from "@/types/student";
+import { Student } from "@/lib/types/student";
 
-const server_url_fetch_regs = "http://localhost:3000/api/registration"
+const server_url_fetch_regs = `${process.env.NEXT_PUBLIC_API_URL}registration`;
 
 const mockStudents: Student[] = [
   {
-    id: "1",
+    _id: "1",
     registrationDate: "2024-01-15",
     fullName: "John Smith",
     dateOfBirth: "1995-03-20",
@@ -31,7 +31,7 @@ const mockStudents: Student[] = [
     agreeToWaiver: true,
   },
   {
-    id: "2",
+    _id: "2",
     registrationDate: "2024-01-18",
     fullName: "Maria Garcia",
     dateOfBirth: "1988-07-12",
@@ -57,7 +57,7 @@ const mockStudents: Student[] = [
     agreeToWaiver: true,
   },
   {
-    id: "3",
+    _id: "3",
     registrationDate: "2024-01-20",
     fullName: "David Chen",
     dateOfBirth: "1992-11-05",

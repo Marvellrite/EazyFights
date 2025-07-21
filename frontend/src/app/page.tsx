@@ -1,16 +1,17 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Checkbox } from "@/components/ui/checkbox"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Progress } from "@/components/ui/progress"
+import { Button } from "@/components/shadcn/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/shadcn/card"
+import { Input } from "@/components/shadcn/input"
+import { Label } from "@/components/shadcn/label"
+import { Textarea } from "@/components/shadcn/textarea"
+import { Checkbox } from "@/components/shadcn/checkbox"
+import { RadioGroup, RadioGroupItem } from "@/components/shadcn/radio-group"
+import { Progress } from "@/components/shadcn/progress"
 import { CheckCircle, User, MapPin, Phone, Heart, Target, FileText } from "lucide-react"
-import { formatToInternational } from "../lib/utils";
+// import { formatToInternational } from "../lib/utils";
+import { formatToInternational } from "@/lib/utils";
 
 interface FormData {
   // Personal Information
@@ -48,7 +49,7 @@ interface FormData {
   agreeToWaiver: boolean
 }
 
-const server_url='http://localhost:3000/api/Registration'
+const server_url= `${process.env.NEXT_PUBLIC_API_URL}registration` || "http://localhost:4000/api/registration";
 
 const steps = [
   {
