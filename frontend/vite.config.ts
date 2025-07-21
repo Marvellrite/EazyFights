@@ -18,7 +18,7 @@ export default defineConfig({
     }
   },
     build: {
-    outDir: path.resolve(__dirname, '../backend/src/frontend'), // ⬅️ adjust as needed
+    outDir: path.resolve(__dirname, '../backend/frontend'), // ⬅️ adjust as needed
     emptyOutDir: true,
   },
 })
