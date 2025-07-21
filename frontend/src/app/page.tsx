@@ -119,7 +119,7 @@ export default function MultiStepForm() {
 
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const updateFormData = (field: keyof FormData, value: any) => {
+  const updateFormData = (field: keyof FormData, value: string|boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
     if (errors[field]) {
@@ -179,7 +179,7 @@ export default function MultiStepForm() {
   const handleSubmit = async() => {
     if (validateStep(currentStep)) {
       console.log("Form Data:", formData);
-      let tempFormData = { ...formData, contactNumber: formatToInternational(formData.contactNumber), emergencyPhoneNumber: formatToInternational(formData.emergencyPhoneNumber) }
+      const tempFormData = { ...formData, contactNumber: formatToInternational(formData.contactNumber), emergencyPhoneNumber: formatToInternational(formData.emergencyPhoneNumber) }
       const mFormData = new FormData();
       (Object.keys(tempFormData)as (keyof FormData)[]).forEach((key)=>{
         mFormData.append(key, tempFormData[key].toString())
@@ -650,8 +650,8 @@ export default function MultiStepForm() {
                       damage that may occur during my training.
                     </p>
                     <p className="mb-4">
-                      I confirm that all information provided is accurate to the best of my knowledge and agree to abide
-                      by the academy's rules and regulations.
+                      {`I confirm that all information provided is accurate to the best of my knowledge and agree to abide
+                      by the academy's rules and regulations.`}
                     </p>
                     <p className="text-red-700 font-medium">
                       By checking the box below, you acknowledge that you have read, understood, and agree to this
@@ -669,7 +669,7 @@ export default function MultiStepForm() {
                       />
                       <Label htmlFor="agreeToWaiver" className="text-sm leading-5">
                         I agree to the <span className="text-red-600 font-medium">Liability Waiver and Agreement</span>{" "}
-                        and confirm that all information provided is accurate. I agree to abide by EazyFights Academy's
+                        and confirm that all information provided is accurate. I agree to abide by EazyFights {`Academy's`}
                         rules and regulations. *
                       </Label>
                     </div>

@@ -107,6 +107,7 @@ const fetchStudents = async(setStudents:React.Dispatch<React.SetStateAction<Stud
         setStudents(regs);
     }
     catch(err){
+      console.error(err)
         alert("Unable to fetch registrations")
     }
 }

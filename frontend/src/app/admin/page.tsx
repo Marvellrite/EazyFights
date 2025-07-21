@@ -250,7 +250,7 @@ function AdminDashboard1(){
                                 <AlertDialogHeader>
                                   <AlertDialogTitle>Delete Student</AlertDialogTitle>
                                   <AlertDialogDescription>
-                                    Are you sure you want to delete {student.fullName}'s registration? This action cannot
+                                    {`Are you sure you want to delete {student.fullName}'s registration? This action cannot`}
                                     be undone.
                                   </AlertDialogDescription>
                                 </AlertDialogHeader>
