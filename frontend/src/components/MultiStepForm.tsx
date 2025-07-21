@@ -48,7 +48,7 @@ interface FormData {
   agreeToWaiver: boolean
 }
 
-const server_url='http://localhost:3000/api/Registration'
+const server_url='https://eazyfights.onrender.com/Registration'
 
 const steps = [
   {
