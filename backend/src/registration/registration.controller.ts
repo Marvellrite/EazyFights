@@ -2,12 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe } fro
 import { RegistrationService } from './registration.service';
 import { RegistrationDto } from './dto/registration.dto';
 import { UpdateRegistrationDto } from './dto/update-registration.dto';
-
+import { UseInterceptors } from '@nestjs/common';
+import { NoFilesInterceptor } from './interceptors';
 @Controller('Registration')
 export class RegistrationController {
   constructor(private readonly RegistrationService: RegistrationService) {}
 
   @Post()
+  @UseInterceptors(NoFilesInterceptor())
   create(@Body(ValidationPipe) registrationDto: RegistrationDto) {
     return this.RegistrationService.create(registrationDto);
   }
@@ -32,3 +34,5 @@ export class RegistrationController {
     return this.RegistrationService.remove(+id);
   }
 }
+
+

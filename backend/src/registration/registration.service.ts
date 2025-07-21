@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { RegistrationDto } from './dto/registration.dto';
 import { UpdateRegistrationDto } from './dto/update-registration.dto';
 
+
 @Injectable()
 export class RegistrationService {
   create(registrationDto: RegistrationDto) {
@@ -23,4 +24,6 @@ export class RegistrationService {
   remove(id: number) {
     return `This action removes a #${id} Registration`;
   }
+
+
 }
