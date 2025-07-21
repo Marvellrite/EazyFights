@@ -49,7 +49,7 @@ interface FormData {
   agreeToWaiver: boolean
 }
 
-const server_url= `${process.env.NEXT_PUBLIC_API_URL}registration` || "http://localhost:4000/api/registration";
+const server_url=`${process.env.NEXT_PUBLIC_API_URL}registration` || "http://localhost:4000/api/registration";
 
 const steps = [
   {

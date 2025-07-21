@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Student } from "@/lib/types/student";
 
-const server_url_fetch_regs = `${process.env.NEXT_PUBLIC_API_URL}registration`;
+const server_url_fetch_regs = `${process.env.NEXT_PUBLIC_API_URL}registration`
 
 const mockStudents: Student[] = [
   {
