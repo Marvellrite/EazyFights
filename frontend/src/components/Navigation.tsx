@@ -1,9 +1,4 @@
-import { Link, useLocation } from "react-router-dom"
-import { Button } from "@/components/ui/button"
-import { Users, UserPlus } from "lucide-react"
-
 export default function Navigation() {
-  const location = useLocation()
 
   return (
     <nav className="bg-white shadow-sm border-b">
