@@ -16,9 +16,6 @@ export default defineConfig({
     postcss:{
       plugins:[autoprefixer()]
     }
-  },
-    build: {
-    outDir: path.resolve(__dirname, '../backend/frontend'), // ⬅️ adjust as needed
-    emptyOutDir: true,
+  }
   },
 })
