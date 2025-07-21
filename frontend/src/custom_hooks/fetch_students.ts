@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Student } from "@/types/student";
 
-const server_url_fetch_regs = "http://localhost:3000/api/registration"
+const server_url_fetch_regs = "https://eazyfights.onrender.com/api/registration"
 
 const mockStudents: Student[] = [
   {
