@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "@nestjs/mapped-types": "*"
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/mapped-types": "*",
+    "multer-cloudinary": "^1.1.0"
   },
   "name": "eazyfights",
   "version": "1.0.0",

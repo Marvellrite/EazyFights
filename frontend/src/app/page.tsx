@@ -1,6 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import type React from "react"
+
+import { useState, useRef } from "react"
+import Image from "next/image"
 import { Button } from "@/components/shadcn/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/shadcn/card"
 import { Input } from "@/components/shadcn/input"
@@ -9,53 +12,56 @@ import { Textarea } from "@/components/shadcn/textarea"
 import { Checkbox } from "@/components/shadcn/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/shadcn/radio-group"
 import { Progress } from "@/components/shadcn/progress"
-import { CheckCircle, User, MapPin, Phone, Heart, Target, FileText } from "lucide-react"
-// import { formatToInternational } from "../lib/utils";
-import { formatToInternational } from "@/lib/utils";
+import { CheckCircle, User, MapPin, Phone, Heart, Target, FileText, Upload, X } from "lucide-react"
+import { addStudent } from "@/actions/client/student-actions"
+import { Student } from "@/types/student";
+import { FormData } from "@/types/formdata"
 
-interface FormData {
-  // Personal Information
-  fullName: string
-  dateOfBirth: string
-  gender: string
-  nationality: string
-  contactNumber: string
-  emailAddress: string
 
-  // Address Information
-  streetAddress: string
-  cityTown: string
-  stateProvince: string
+// interface FormData {
+//   // Passport Photo
+//   passportPhoto?: string
 
-  // Emergency Contact Information
-  emergencyContactName: string
-  relationship: string
-  emergencyPhoneNumber: string
+//   // Personal Information
+//   fullName: string
+//   dateOfBirth: string
+//   gender: string
+//   nationality: string
+//   contactNumber: string
+//   emailAddress: string
 
-  // Health Information
-  hasPreExistingConditions: string,
-  medicalConditionsDetails: string
-  takingMedications: string
-  medicationsDetails: string
-  hadSurgeries: string
-  surgeriesDetails: string
+//   // Address Information
+//   streetAddress: string
+//   cityTown: string
+//   stateProvince: string
 
-  // Training Goals
-  primaryGoal: string
-  otherGoalDetails: string
-  martialArtsExperience: string
+//   // Emergency Contact Information
+//   emergencyContactName: string
+//   relationship: string
+//   emergencyPhoneNumber: string
 
-  // Liability Waiver
-  agreeToWaiver: boolean
-}
+//   // Health Information
+//   hasPreExistingConditions: string
+//   medicalConditionsDetails: string
+//   takingMedications: string
+//   medicationsDetails: string
+//   hadSurgeries: string
+//   surgeriesDetails: string
 
-const server_url=`${process.env.NEXT_PUBLIC_API_URL}registration` || "http://localhost:4000/api/registration";
+//   // Training Goals
+//   primaryGoal: string
+//   otherGoalDetails: string
+//   martialArtsExperience: string
+
+//   // Liability Waiver
+//   agreeToWaiver: boolean
+// }
 
 const steps = [
   {
     id: 1,
     title: "Personal Information",
-    description: "Basic personal details",
+    description: "Basic personal details and photo",
     icon: User,
   },
   {
@@ -91,8 +97,10 @@ const steps = [
 ]
 
 export default function MultiStepForm() {
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState<FormData>({
+    passportPhoto: undefined,
     fullName: "",
     dateOfBirth: "",
     gender: "",
@@ -119,11 +127,42 @@ export default function MultiStepForm() {
 
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const updateFormData = (field: keyof FormData, value: string|boolean) => {
+  const updateFormData = (field: keyof FormData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: "" }))
+    }
+  }
+
+  // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0]
+  //   if (file) {
+  //     // Validate file type
+  //     if (!file.type.startsWith("image/")) {
+  //       setErrors((prev) => ({ ...prev, passportPhoto: "Please select a valid image file" }))
+  //       return
+  //     }
+
+  //     // Validate file size (max 5MB)
+  //     if (file.size > 5 * 1024 * 1024) {
+  //       setErrors((prev) => ({ ...prev, passportPhoto: "Image size should be less than 5MB" }))
+  //       return
+  //     }
+
+  //     const reader = new FileReader()
+  //     reader.onload = (e) => {
+  //       const result = e.target?.result as string
+  //       updateFormData("passportPhoto", result)
+  //     }
+  //     reader.readAsDataURL(file)
+  //   }
+  // }
+
+  const removeImage = () => {
+    updateFormData("passportPhoto", undefined)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
     }
   }
 
@@ -132,6 +171,7 @@ export default function MultiStepForm() {
 
     switch (step) {
       case 1:
+        if (!formData.passportPhoto) newErrors.passportPhoto = "Passport photo is required"
         if (!formData.fullName) newErrors.fullName = "Full name is required"
         if (!formData.dateOfBirth) newErrors.dateOfBirth = "Date of birth is required"
         if (!formData.gender) newErrors.gender = "Gender is required"
@@ -178,34 +218,55 @@ export default function MultiStepForm() {
 
   const handleSubmit = async() => {
     if (validateStep(currentStep)) {
-      console.log("Form Data:", formData);
-      const tempFormData = { ...formData, contactNumber: formatToInternational(formData.contactNumber), emergencyPhoneNumber: formatToInternational(formData.emergencyPhoneNumber) }
-      const mFormData = new FormData();
-      (Object.keys(tempFormData)as (keyof FormData)[]).forEach((key)=>{
-        mFormData.append(key, tempFormData[key].toString())
-      })
-      try {
-        console.log(server_url)
-        
-        const response = await fetch(server_url, {
-          method: "POST",
-          body: mFormData,
-        }
-      );
-      if (!response.ok) {
-          throw new Error("Form Not Submitted Successfully");
-      };
-      const data = await response.json();
-      console.log("Registration successful:", data);
-      alert("Registration submitted successfully! Welcome to EazyFights! 🥊");
+      // Add student to context
+      
+      try{
+        await addStudent(formData);
+  
+        alert("Registration submitted successfully! Welcome to Easy Fights! 🥊")
+        console.log("Form Data:", formData);
 
-      } catch (error) {
-        console.error("Error submitting Registration:", error);
+
+         // Reset form
+      /*
+      setFormData({
+        passportPhoto: undefined,
+        fullName: "",
+        dateOfBirth: "",
+        gender: "",
+        nationality: "",
+        contactNumber: "",
+        emailAddress: "",
+        streetAddress: "",
+        cityTown: "",
+        stateProvince: "",
+        emergencyContactName: "",
+        relationship: "",
+        emergencyPhoneNumber: "",
+        hasPreExistingConditions: "",
+        medicalConditionsDetails: "",
+        takingMedications: "",
+        medicationsDetails: "",
+        hadSurgeries: "",
+        surgeriesDetails: "",
+        primaryGoal: "",
+        otherGoalDetails: "",
+        martialArtsExperience: "",
+        agreeToWaiver: false,
+      })
+      setCurrentStep(1)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""
+      }*/
+
+      }
+      catch(err){
+        console.error("Error submitting Registration:", err);
         alert("There was an error submitting your Registration. Please try again later.")
         return;
       }
-      
-      
+
+     
     }
   }
 
@@ -214,20 +275,6 @@ export default function MultiStepForm() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 py-8 px-4">
       <div className="max-w-2xl mx-auto">
-        {/* Organization Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-            <div className="bg-red-600 text-white p-3 rounded-full mr-4">
-              <span className="text-2xl">🥊</span>
-            </div>
-            <div>
-              <h1 className="text-4xl font-bold text-red-800">EazyFights</h1>
-              <p className="text-lg text-red-600 font-medium">The Self Defense Academy</p>
-              <p className="text-sm text-gray-600">Student Registration Form</p>
-            </div>
-          </div>
-        </div>
-
         {/* Progress Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
@@ -241,7 +288,7 @@ export default function MultiStepForm() {
 
           {/* Step Indicators */}
           <div className="flex items-center justify-between">
-            {steps.map((step) => {
+            {steps.map((step, index) => {
               const Icon = step.icon
               const isCompleted = currentStep > step.id
               const isCurrent = currentStep === step.id
@@ -267,7 +314,7 @@ export default function MultiStepForm() {
                     >
                       {step.title}
                     </p>
-                    <p className="text-xs text-gray-400 hidden sm:block">{step.description}</p>
+                    {/* <p className="text-xs text-gray-400 hidden sm:block">{step.description}</p> */}
                   </div>
                 </div>
               )
@@ -285,6 +332,55 @@ export default function MultiStepForm() {
             {/* Step 1: Personal Information */}
             {currentStep === 1 && (
               <div className="space-y-4">
+                {/* Passport Photo Upload */}
+                <div>
+                  <Label className="text-base font-medium">Passport Photo *</Label>
+                  <div className="mt-2">
+                    {!formData.passportPhoto ? (
+                      <div
+                        className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
+                          errors.passportPhoto ? "border-red-500 bg-red-50" : "border-gray-300 hover:border-gray-400"
+                        }`}
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                        <p className="mt-2 text-sm text-gray-600">Click to upload your passport photo</p>
+                        <p className="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
+                      </div>
+                    ) : (
+                      <div className="relative inline-block">
+                        <div className="relative w-32 h-40 border-2 border-gray-300 rounded-lg overflow-hidden">
+                          <Image
+                            src={URL.createObjectURL(formData.passportPhoto) || "/placeholder.svg"}
+                            alt="Passport photo preview"
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                          onClick={removeImage}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    )}
+                    <input
+                      title="Passport"
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      // onChange={handleImageUpload}
+                      onChange={(e)=>updateFormData("passportPhoto", e.currentTarget.files?.[0]) }
+                      className="hidden"
+                    />
+                    {errors.passportPhoto && <p className="text-red-500 text-sm mt-1">{errors.passportPhoto}</p>}
+                  </div>
+                </div>
+
                 <div>
                   <Label htmlFor="fullName">Full Name *</Label>
                   <Input
@@ -615,6 +711,20 @@ export default function MultiStepForm() {
                 <div>
                   <h3 className="text-lg font-semibold mb-4 text-red-700">Review Your Information</h3>
                   <div className="bg-red-50 p-4 rounded-lg space-y-2 text-sm border border-red-200">
+                    {formData.passportPhoto && (
+                      <div className="flex items-center space-x-2">
+                        <strong>Photo:</strong>
+                        <div className="w-12 h-16 border border-gray-300 rounded overflow-hidden">
+                          <Image
+                            src={URL.createObjectURL(formData.passportPhoto) || "/placeholder.svg"}
+                            alt="Passport photo"
+                            width={48}
+                            height={64}
+                            className="object-cover"
+                          />
+                        </div>
+                      </div>
+                    )}
                     <p>
                       <strong>Name:</strong> {formData.fullName}
                     </p>
@@ -650,8 +760,8 @@ export default function MultiStepForm() {
                       damage that may occur during my training.
                     </p>
                     <p className="mb-4">
-                      {`I confirm that all information provided is accurate to the best of my knowledge and agree to abide
-                      by the academy's rules and regulations.`}
+                      I confirm that all information provided is accurate to the best of my knowledge and agree to abide
+                      by the academy's rules and regulations.
                     </p>
                     <p className="text-red-700 font-medium">
                       By checking the box below, you acknowledge that you have read, understood, and agree to this
@@ -669,7 +779,7 @@ export default function MultiStepForm() {
                       />
                       <Label htmlFor="agreeToWaiver" className="text-sm leading-5">
                         I agree to the <span className="text-red-600 font-medium">Liability Waiver and Agreement</span>{" "}
-                        and confirm that all information provided is accurate. I agree to abide by EazyFights {`Academy's`}
+                        and confirm that all information provided is accurate. I agree to abide by Easy Fights Academy's
                         rules and regulations. *
                       </Label>
                     </div>

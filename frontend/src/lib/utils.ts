@@ -20,6 +20,7 @@ export function formatToInternational(phone: string): string {
     return '+' + cleaned;
   }
 
+  alert('Invalid Nigerian phone number format')
   // Otherwise return as-is or throw an error
   throw new Error('Invalid Nigerian phone number format');
 }
