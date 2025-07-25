@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Student } from "@/types/student";
 
-const server_url_fetch_regs = `${process.env.NEXT_PUBLIC_API_URL}registration`
+const student_server_url_endpoint = `${process.env.NEXT_PUBLIC_API_URL}student`
 
 const mockStudents: Student[] = [
   {
@@ -102,7 +102,7 @@ export const useStudentsFetch = ()=>{
 
 const fetchStudents = async(setStudents:React.Dispatch<React.SetStateAction<Student[]>>)=>{
     try{
-        const response = await fetch(server_url_fetch_regs);
+        const response = await fetch(student_server_url_endpoint);
         if(!response.ok){
             throw new Error("Unable to fetch Students")
         }

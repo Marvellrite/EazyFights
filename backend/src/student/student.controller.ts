@@ -1,8 +1,7 @@
-import { Controller, Post, UseInterceptors, UploadedFile, Body, UsePipes, ValidationPipe, Inject, Get } from "@nestjs/common";
+import { Controller, Post, UseInterceptors, UploadedFile, Body, UsePipes, ValidationPipe, Get, Delete, Param, NotFoundException} from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express"
 import { RegistrationDto } from "./dto/registration.dto";
 import { ConfigService } from "@nestjs/config";
-import {  StorageEngine } from "multer";
 import { CloudinaryStorage } from "@fluidjs/multer-cloudinary";
 import { v2 as cloudinary } from "cloudinary";
 import { StudentService } from "./student.service";
@@ -21,9 +20,9 @@ const storage = new CloudinaryStorage({
     }
 })
 
-@Controller('registration')
+@Controller('student')
 export class StudentController {
-    constructor(private readonly config:ConfigService, private readonly student: StudentService ){ 
+    constructor(private readonly config:ConfigService, private readonly studentService: StudentService ){ 
     }
     @UseInterceptors(FileInterceptor("passportPhoto", {storage}))
     @Post()
@@ -32,7 +31,7 @@ export class StudentController {
 
         const { path:passportPhoto, filename:publicId } = file;
 
-        await this.student.create({...body, passportPhoto, publicId})
+        await this.studentService.create({...body, passportPhoto, publicId})
         return{
             msg: "Registration successful",
             
@@ -43,6 +42,15 @@ export class StudentController {
 
     @Get()
     async getAllRegistrations() {
-        return this.student.findAll();
+        return this.studentService.findAll();
     }
+
+
+     @Delete('delete/:id')
+  async deleteStudent(@Param('id') id: string) {
+    await this.studentService.deleteStudent(id);
+    return {
+        msg:'Student Deleted Successfully'
+    }
+  }
 }

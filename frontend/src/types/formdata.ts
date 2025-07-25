@@ -1,4 +1,3 @@
-import { File } from "buffer";
 import { Student } from "./student";
 
 export interface FormData extends Omit<Student, "registrationDate"|"_id"|"passportPhoto"> {

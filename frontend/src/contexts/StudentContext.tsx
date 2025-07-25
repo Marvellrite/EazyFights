@@ -1,12 +1,13 @@
-import { createContext, useContext, type ReactNode } from "react"
+import { createContext, useContext, type ReactNode, type Dispatch, type SetStateAction } from "react"
 import type { Student } from "../types/student"
 import { useStudentsFetch } from "@/custom_hooks/fetch_students"
 
 interface StudentContextType {
   students: Student[]
+  setStudents: Dispatch<SetStateAction<Student[]>>
   // addStudent: (student: Omit<Student, "id" | "registrationDate">) => void
-  deleteStudent: (id: string) => void
-  getStudent: (id: string) => Student | undefined
+  // deleteStudent: (id: string) => void
+  // getStudent: (id: string) => Student | undefined
 }
 
 const StudentContext = createContext<StudentContextType | undefined>(undefined)
@@ -28,16 +29,16 @@ export function StudentProvider({ children }: { children: ReactNode }) {
   //   setStudents((prev) => [...prev, newStudent])
   // }
 
-  const deleteStudent = (id: string) => {
-    setStudents((prev) => prev.filter((student) => student._id !== id))
-  }
+  // const deleteStudent = (id: string) => {
+  //   setStudents((prev) => prev.filter((student) => student._id !== id))
+  // }
 
-  const getStudent = (id: string) => {
-    return students.find((student) => student._id === id)
-  }
+  // const getStudent = (id: string) => {
+  //   return students.find((student) => student._id === id)
+  // }
 
   return (
-    <StudentContext.Provider value={{ students, deleteStudent, getStudent }}>
+    <StudentContext.Provider value={{ students, setStudents }}>
       {children}
     </StudentContext.Provider>
   )

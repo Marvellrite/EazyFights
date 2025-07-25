@@ -23,9 +23,10 @@ import { Badge } from "@/components/shadcn/badge"
 import { Search, Eye, Trash2, Users, Calendar, Phone, Mail } from "lucide-react"
 import type { Student } from "@/types/student"
 import { StudentProvider } from "@/contexts/StudentContext";
+import { deleteStudent } from "@/actions/client/student-actions";
 
 function AdminDashboard() {
-  const { students, deleteStudent } = useStudents()
+  const { students, setStudents } = useStudents()
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null)
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
@@ -44,7 +45,7 @@ function AdminDashboard() {
   }
 
   const handleDeleteStudent = (studentId: string) => {
-    deleteStudent(studentId)
+    deleteStudent(studentId, students, setStudents)
   }
 
   const formatDate = (dateString: string) => {
@@ -266,7 +267,7 @@ function AdminDashboard() {
                               <AlertDialogHeader>
                                 <AlertDialogTitle>Delete Student</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Are you sure you want to delete {student.fullName}'s registration? This action cannot
+                                  Are you sure you want to delete {` ${student.fullName}'s`} registration? This action cannot
                                   be undone.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
@@ -306,7 +307,7 @@ function AdminDashboard() {
               <div className="flex justify-center bg-gray-50 p-4 rounded-lg">
                 {selectedStudent.passportPhoto ? (
                   <div className="relative">
-                    <img
+                    <Image
                       src={selectedStudent.passportPhoto || "/placeholder.svg"}
                       alt={`${selectedStudent.fullName}'s passport photo`}
                       className="w-32 h-40 object-cover rounded-lg border-2 border-gray-300 shadow-sm"

@@ -14,7 +14,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/shadcn/radio-group"
 import { Progress } from "@/components/shadcn/progress"
 import { CheckCircle, User, MapPin, Phone, Heart, Target, FileText, Upload, X } from "lucide-react"
 import { addStudent } from "@/actions/client/student-actions"
-import { Student } from "@/types/student";
 import { FormData } from "@/types/formdata"
 
 
@@ -127,7 +126,7 @@ export default function MultiStepForm() {
 
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const updateFormData = (field: keyof FormData, value: any) => {
+  const updateFormData = (field: keyof FormData, value: string|Blob|undefined|boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
     if (errors[field]) {
@@ -288,7 +287,7 @@ export default function MultiStepForm() {
 
           {/* Step Indicators */}
           <div className="flex items-center justify-between">
-            {steps.map((step, index) => {
+            {steps.map((step) => {
               const Icon = step.icon
               const isCompleted = currentStep > step.id
               const isCurrent = currentStep === step.id
@@ -760,8 +759,8 @@ export default function MultiStepForm() {
                       damage that may occur during my training.
                     </p>
                     <p className="mb-4">
-                      I confirm that all information provided is accurate to the best of my knowledge and agree to abide
-                      by the academy's rules and regulations.
+                      {`I confirm that all information provided is accurate to the best of my knowledge and agree to abide
+                      by the academy's rules and regulations.`}
                     </p>
                     <p className="text-red-700 font-medium">
                       By checking the box below, you acknowledge that you have read, understood, and agree to this
@@ -779,7 +778,7 @@ export default function MultiStepForm() {
                       />
                       <Label htmlFor="agreeToWaiver" className="text-sm leading-5">
                         I agree to the <span className="text-red-600 font-medium">Liability Waiver and Agreement</span>{" "}
-                        and confirm that all information provided is accurate. I agree to abide by Easy Fights Academy's
+                        and confirm that all information provided is accurate. I agree to abide by Easy Fights {`Academy's`}
                         rules and regulations. *
                       </Label>
                     </div>
