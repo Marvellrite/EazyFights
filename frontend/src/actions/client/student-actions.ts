@@ -1,3 +1,4 @@
+import FetchError from "@/lib/classes/errors/fetch_error";
 import { formatToInternational } from "@/lib/utils";
 import { FormData as FormDataT } from "@/types/formdata";
 import { Student } from "@/types/student";
@@ -9,7 +10,7 @@ const student_url_endpoint = process.env.NEXT_PUBLIC_API_URL+"student";
 export const addStudent = async(formData:FormDataT)=>{
 
     
-      // Begining of submit fetch logic
+          // Begining of submit fetch logic
       const tempFormData = { ...formData, contactNumber: formatToInternational(formData.contactNumber), emergencyPhoneNumber: formatToInternational(formData.emergencyPhoneNumber), registrationDate: Date().toWellFormed() }
       const mFormData = new FormData();
       (Object.keys(tempFormData)as (keyof typeof tempFormData)[]).forEach((key)=>{
@@ -23,19 +24,12 @@ export const addStudent = async(formData:FormDataT)=>{
           body: mFormData,
         }
       );
+      if (response.status==409) {
+          throw new FetchError("Student with this Email has already been registered", 400);
+      };
       if (!response.ok) {
           throw new Error("Form Not Submitted Successfully");
       };
-      const data = await response.json();
-      console.log("Registration successful:", data);
-      alert("Registration submitted successfully! Welcome to EazyFights! 🥊");
-
-    //   } catch (error) {
-    //     console.error("Error submitting Registration:", error);
-    //     alert("There was an error submitting your Registration. Please try again later.")
-    //     return;
-    //   }
-
 
 }
 

@@ -28,7 +28,7 @@ export class Registration {
   @Prop({ required: true })
   streetAddress: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, sparse: true })
   cityTown: string;
 
   @Prop({ required: true })

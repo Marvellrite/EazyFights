@@ -6,7 +6,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { AuthModule } from "./auth/auth.module";
 import { StudentModule } from './student/student.module';
 import { ServeStaticModule } from "@nestjs/serve-static/dist";
-import { join, resolve } from "path";
+import {  resolve } from "path";
 import { ConfigModule } from "@nestjs/config";
 import { cloudinary } from "./config/cloudinary.config";
 

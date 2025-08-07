@@ -1,13 +1,15 @@
+import Image from "next/image";
+
 export default function Navigation() {
 
   return (
-    <nav className="bg-white shadow-sm border-b">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className=" ">
+      <div className="max-w-7xl mx-auto ">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <div className="bg-red-600 text-white p-2 rounded-full mr-3">
-              <span className="text-lg">🥊</span>
-            </div>
+
+            <Image className=" p-2 rounded-full mr-3" alt="EazyFights Logo" width={65} height={65} src={"/logo.png"}></Image>
+
             <div>
               <h1 className="text-xl font-bold text-red-800">EazyFights</h1>
               <p className="text-sm text-red-600">The Self Defense Academy</p>

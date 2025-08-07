@@ -29,7 +29,12 @@ export class StudentController {
     @UsePipes(ValidationPipe)
     async registerStudent( @Body() body:RegistrationDto, @UploadedFile() file: Express.Multer.File,){
 
+        if(!file) {
+            throw new NotFoundException("Passport photo is required");
+        }
+
         const { path:passportPhoto, filename:publicId } = file;
+        
 
         await this.studentService.create({...body, passportPhoto, publicId})
         return{

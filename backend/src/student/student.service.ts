@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, InternalServerErrorException } from '@nestjs/common';
 import { RegistrationDto } from './dto/registration.dto';
 import { UpdateRegistrationDto } from './dto/update-registration.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import {  Registration as registration } from './schemas/registration.schema';
+import {  Registration as registration } from './schemas/student.registration.schema';
 import {  Model } from 'mongoose';
 import deleteFromCloudinary from 'src/lib/deleteFromCloudinary';
 
@@ -14,9 +14,30 @@ export class StudentService {
 
   }
 
+  async ensureUniqueIndexes(){
+    await this.studentModel.syncIndexes();
+  }
 
-  create(registrationInfo: RegistrationDto&{passportPhoto:string, publicId:string}) {
-    return this.studentModel.create(registrationInfo);
+
+  async create(registrationInfo: RegistrationDto&{passportPhoto:string, publicId:string}) {
+    try {
+      
+      console.log("The error is here")
+      return await this.studentModel.create(registrationInfo);
+    } catch (err) {
+      console.log("The error=>", err);
+      if( err && typeof err == 'object' && 'code' in err){
+
+        switch(err.code){
+          case 11000:
+            throw new ConflictException("Duplicate Email");
+          default:
+            throw new InternalServerErrorException("Something went wrong during registration")
+            
+          }
+        }
+        throw new InternalServerErrorException("Something went wrong during registration")
+    }
   }
   
   findAll() {

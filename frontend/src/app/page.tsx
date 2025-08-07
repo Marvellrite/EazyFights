@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import { Loader2Icon } from "lucide-react"
 import { useState, useRef } from "react"
 import Image from "next/image"
 import { Button } from "@/components/shadcn/button"
@@ -15,6 +15,8 @@ import { Progress } from "@/components/shadcn/progress"
 import { CheckCircle, User, MapPin, Phone, Heart, Target, FileText, Upload, X } from "lucide-react"
 import { addStudent } from "@/actions/client/student-actions"
 import { FormData } from "@/types/formdata"
+import FetchError from "@/lib/classes/errors/fetch_error"
+import Navigation from "@/components/Navigation"
 
 
 // interface FormData {
@@ -126,6 +128,8 @@ export default function MultiStepForm() {
 
   const [errors, setErrors] = useState<Record<string, string>>({})
 
+  const [isRegistering, setIsRegistering] = useState<boolean>(false)
+
   const updateFormData = (field: keyof FormData, value: string|Blob|undefined|boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
@@ -220,6 +224,7 @@ export default function MultiStepForm() {
       // Add student to context
       
       try{
+        setIsRegistering(true)
         await addStudent(formData);
   
         alert("Registration submitted successfully! Welcome to Easy Fights! 🥊")
@@ -259,10 +264,22 @@ export default function MultiStepForm() {
       }*/
 
       }
-      catch(err){
+      catch(error){
+        const err = error as FetchError;
+        switch (err.statusCode) {
+          case undefined: 
+          case null:
+            alert("There was an error submitting your Registration. Please try again later.");    
+            break;
+        
+          default:
+            alert(err.message)
+            break;
+        }
         console.error("Error submitting Registration:", err);
-        alert("There was an error submitting your Registration. Please try again later.")
-        return;
+      }
+      finally{
+        setIsRegistering(false);
       }
 
      
@@ -272,10 +289,13 @@ export default function MultiStepForm() {
   const progress = (currentStep / steps.length) * 100
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 py-8 pt-4 px-4">
       <div className="max-w-2xl mx-auto">
+
+            <Navigation></Navigation>
+
         {/* Progress Header */}
-        <div className="mb-8">
+        <div className="mb-8 mt-4 max-sm:mb-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-gray-800">Registration Process</h2>
             <span className="text-sm text-gray-500">
@@ -286,7 +306,7 @@ export default function MultiStepForm() {
           <Progress value={progress} className="mb-6" />
 
           {/* Step Indicators */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-start justify-between ">
             {steps.map((step) => {
               const Icon = step.icon
               const isCompleted = currentStep > step.id
@@ -295,7 +315,19 @@ export default function MultiStepForm() {
               return (
                 <div key={step.id} className="flex flex-col items-center flex-1">
                   <div
-                    className={`flex items-center justify-center w-10 h-10 rounded-full border-2 mb-2 ${
+                    className={`flex items-center justify-center w-10 h-10 rounded-full border-2 mb-2 sm:hidden ${
+                      isCompleted
+                        ? "bg-red-500 border-red-500 text-white"
+                        : isCurrent
+                          ? "bg-orange-500 border-orange-500 text-white"
+                          : "bg-white border-gray-300 text-gray-400"
+                    }`}
+                  >
+                    {/* {isCompleted ? <CheckCircle className="w-5 h-5" /> : <Icon className="w-5 h-5" />} */}
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <div
+                    className={`flex items-center justify-center w-10 h-10 rounded-full border-2 mb-2 max-sm:hidden ${
                       isCompleted
                         ? "bg-red-500 border-red-500 text-white"
                         : isCurrent
@@ -304,10 +336,11 @@ export default function MultiStepForm() {
                     }`}
                   >
                     {isCompleted ? <CheckCircle className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
+                    {/* <Icon className="w-5 h-5" /> */}
                   </div>
                   <div className="text-center">
                     <p
-                      className={`text-xs font-medium ${
+                      className={`text-xs font-medium hidden sm:block ${
                         isCurrent ? "text-orange-600" : isCompleted ? "text-red-600" : "text-gray-400"
                       }`}
                     >
@@ -799,8 +832,12 @@ export default function MultiStepForm() {
                   Next
                 </Button>
               ) : (
-                <Button onClick={handleSubmit} className="bg-green-600 hover:bg-green-700">
-                  Complete Registration
+                <Button onClick={handleSubmit} disabled={isRegistering}  className="bg-green-600 hover:bg-green-700">
+                  {isRegistering?
+                    <><Loader2Icon className="animate-spin " />
+                  `Please wait...`</>:"Complete Registration"
+                  }
+                  
                 </Button>
               )}
             </div>
